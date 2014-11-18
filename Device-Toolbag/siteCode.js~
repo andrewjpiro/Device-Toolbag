@@ -19,8 +19,7 @@ function nextPage()
 
 function prevPage()
 {
-    if(pageCounter.staticCounter > 1)
-    	loadPage(pageCounter.staticCounter-1);
+    loadPage(pageCounter.staticCounter-1);
 }
 
 
