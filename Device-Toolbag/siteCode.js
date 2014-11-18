@@ -5,11 +5,19 @@ var obj = JSON.parse(httpGet(urlString));
 
 var numImgShown = 5;
 var array = (getLastKeys(obj)).split(",");
-var imageArray = [];
-
+var imageArray = [];                              
+var totalPages = (array.length/numImgShown);           
+				//possibly +1 if remainder...
+var total = document.createTextNode(totalPages);
+document.getElementById("total").appendChild(total);
 loadPage(1);
 
 
+function goToPage()
+{
+    var page = parseInt(document.getElementById("page").value);
+    loadPage(page);
+}
 
 function nextPage()
 {
@@ -27,7 +35,7 @@ function prevPage()
 function loadPage(page)
 {
     pageCounter.staticCounter = page;	
-    
+    document.getElementById("page").value=page;	    
     var list = document.getElementById("ImageList");
     list.parentNode.removeChild(list);
 

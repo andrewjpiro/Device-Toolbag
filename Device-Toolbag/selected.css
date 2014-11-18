@@ -1,6 +1,29 @@
 h1.selected{
 	color: #1b609a;
 }
+div{
+    border: 2px solid #a1a1a1;
+    padding: 10px 40px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+input{
+	width: 30px;
+}
+#paginator
+{
+	border: 1px solid #a1a1a1;
+	padding: 0px 0px;
+	width: 125px;
+	height:40px;
+	margin-left:auto;
+	margin-right:auto;
+	vertical-align:top;
+}
+p{
+	font-size:10px;
+}
 body{
 	font-family: helvetica;
 	
