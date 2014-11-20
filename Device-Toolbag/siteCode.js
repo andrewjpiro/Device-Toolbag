@@ -6,11 +6,58 @@ var obj = JSON.parse(httpGet(urlString));
 var numImgShown = 5;
 var array = (getLastKeys(obj)).split(",");
 var imageArray = [];                              
-var totalPages = (array.length/numImgShown);           
-				//possibly +1 if remainder...
+var totalPages = (array.length/numImgShown); //possibly +1 if remainder...
 var total = document.createTextNode(totalPages);
 document.getElementById("total").appendChild(total);
+
 loadPage(1);
+
+var draggableOptions={
+	droppables: $('gearbag'),
+	
+        onDrop:function(elem, droppable, event)
+	{
+		if(droppable)
+		     droppable.addClass('dropped');
+	},
+
+	onEnter: function(elem, droppable)
+	{
+		droppable.addClass('blue');
+	},
+
+	onLeave: function(elem, droppable)
+	{
+		droppable.removeClass('blue');
+	},
+	onComplete: function(elem)
+	{
+		elem.dispose();
+	}
+};
+
+window.addEvent('domready', makeListDraggable);
+
+
+function makeListDraggable()
+{
+	$$('.draggable').each(function(item){
+ 
+	item.addEvent('mousedown', function(event) {
+		event.stop();
+ 
+		var clone = this.clone()
+			.setStyles(this.getCoordinates())
+	       		.setStyles({'position': 'absolute'})	
+			.inject(document.body);
+ 
+ 
+		var drag = clone.makeDraggable(draggableOptions); 
+ 
+		drag.start(event); // start the event manual
+	});
+     });
+}
 
 
 function goToPage()
@@ -35,9 +82,12 @@ function prevPage()
 function loadPage(page)
 {
     pageCounter.staticCounter = page;	
-    document.getElementById("page").value=page;	    
-    var list = document.getElementById("ImageList");
-    list.parentNode.removeChild(list);
+    $("page").value=page;	 
+
+    $$('div.draggable').each(function(image)
+	{
+	   image.dispose();
+        });
 
     var start = (page-1) * numImgShown;
     var end = start + numImgShown;
@@ -84,26 +134,25 @@ function pageCounter()
 function createImageList(array, divId)
 {
   
-    var list = document.createElement("dl");
-    list.id = "ImageList";
+    var listDiv = document.getElementById(divId);
+
 
     for(var i=0; i<array.length; i++)
-    {
+    {  
+       var des =  document.createTextNode(array[i].catName);
+		    
        var img = document.createElement("img");
        img.src = array[i].imageUrl;
 
-       var des =  document.createTextNode(array[i].catName);
-       var term = document.createElement("dt")
-       var elem = document.createElement("dd");
+       
+       var div = document.createElement("div");
+       div.addClass("draggable");
 
-       term.appendChild(des);
-       elem.appendChild(img);
-       list.appendChild(term);
-       list.appendChild(elem);
+       div.appendChild(des);
+       div.appendChild(img);
+
+       listDiv.appendChild(div);
     }
-
-    var listDiv = document.getElementById(divId);
-    listDiv.appendChild(list);
 }
 
 /* getLastKeys

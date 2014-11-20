@@ -1,7 +1,15 @@
 h1.selected{
 	color: #1b609a;
 }
-div{
+div.draggable{
+	border: 0px;
+	width:100px;
+}
+#gearbag.blue{
+	border: 2px solid #1b609a;
+}
+
+#imageDiv{
     border: 2px solid #a1a1a1;
     padding: 10px 40px;
     width: 300px;
@@ -21,6 +29,21 @@ input{
 	margin-right:auto;
 	vertical-align:top;
 }
+#gearbag
+{
+	border: 2px solid #a1a1a1;
+	margin-right:0;
+	margin-bottom:100;
+	margin-left:auto;
+	vertical-align:top;
+	width: 100px;
+}
+#gearBagImage
+{
+	width:100px;
+	height:100px
+}
+
 p{
 	font-size:10px;
 }
