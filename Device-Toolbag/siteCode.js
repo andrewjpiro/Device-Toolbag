@@ -19,6 +19,7 @@ var draggableOptions={
 	{
 		if(droppable)
 		     droppable.addClass('dropped');
+	       $('deviceDiv').innerHTML	= elem.getFirst().id;
 	},
 
 	onEnter: function(elem, droppable)
@@ -33,6 +34,7 @@ var draggableOptions={
 	onComplete: function(elem)
 	{
 		elem.dispose();
+		$('gearbag').removeClass('blue');
 	}
 };
 
@@ -43,12 +45,12 @@ function makeListDraggable()
  
 	item.addEvent('mousedown', function(event) {
 		event.stop();
- 
+ 		
 		var clone = this.clone()
 			.setStyles(this.getCoordinates())
 	       		.setStyles({'position': 'absolute'})	
 			.inject(document.body);
- 
+ 		clone.getFirst().id = this.getFirst().id;
  
 		var drag = clone.makeDraggable(draggableOptions); 
  
@@ -80,7 +82,8 @@ function prevPage()
 function loadPage(page)
 {
     pageCounter.staticCounter = page;	
-    $("page").value=page;	 
+    $("page").value=page;
+    
 
     $$('div.draggable').each(function(image)
 	{
@@ -138,10 +141,10 @@ function createImageList(array, divId)
 
     for(var i=0; i<array.length; i++)
     {  
-       var des =  document.createTextNode(array[i].catName);
-		    
+       var des =  document.createTextNode(array[i].catName);		    
        var img = document.createElement("img");
        img.src = array[i].imageUrl;
+       img.id = array[i].catName;
 
        
        var div = document.createElement("div");
