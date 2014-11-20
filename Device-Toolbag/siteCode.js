@@ -36,8 +36,6 @@ var draggableOptions={
 	}
 };
 
-window.addEvent('domready', makeListDraggable);
-
 
 function makeListDraggable()
 {
@@ -98,6 +96,7 @@ function loadPage(page)
     } 
 
     createImageList(imageArray, "imageDiv");
+    makeListDraggable();
 }
 
 ////////////////////////////////////
