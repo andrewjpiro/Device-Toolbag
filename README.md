@@ -1,4 +1,4 @@
 #Device-Toolbag
 
-Will allow users to drag and drop images into a toolbag to save for later reference.
-Current version simply shows a paginated view of all devices with their corresponding images.
+The device-toolbag creates a list of images received from ifixit's api and allows users to drag and drop them into a toolbag to save for later reference. It uses JavaScript and MooTools throughout and uses MooSQL to store devices for later usage.
+
