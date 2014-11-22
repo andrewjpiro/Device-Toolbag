@@ -1,62 +1,41 @@
 pageCounter.staticCounter = 1;
 
 var urlString = "https://www.ifixit.com/api/2.0/categories";
-var obj = JSON.parse(httpGet(urlString));
+var numImgShown = 28;
 
-var numImgShown = 5;
+var obj = JSON.parse(httpGet(urlString));
 var array = (getLastKeys(obj)).split(",");
-var imageArray = [];                              
+
 var totalPages = (array.length/numImgShown); //possibly +1 if remainder...
 var total = document.createTextNode(totalPages);
-document.getElementById("total").appendChild(total);
+$("total").appendChild(total);
 
+sqlDB.exec("CREATE TABLE IF NOT EXISTS deviceLog(deviceName TEXT, deviceURL, TEXT)", callback);
+
+sqlDB.findA('deviceLog', populateGearbag);
 loadPage(1);
 
-var draggableOptions={
-	droppables: $('gearbag'),
-	
-        onDrop:function(elem, droppable, event)
-	{
-		if(droppable)
-		     droppable.addClass('dropped');
-	       $('deviceDiv').innerHTML	= elem.getFirst().id;
-	},
-
-	onEnter: function(elem, droppable)
-	{
-		droppable.addClass('blue');
-	},
-
-	onLeave: function(elem, droppable)
-	{
-		droppable.removeClass('blue');
-	},
-	onComplete: function(elem)
-	{
-		elem.dispose();
-		$('gearbag').removeClass('blue');
-	}
-};
-
-
-function makeListDraggable()
+function loadPage(page)
 {
-	$$('.draggable').each(function(item){
- 
-	item.addEvent('mousedown', function(event) {
-		event.stop();
- 		
-		var clone = this.clone()
-			.setStyles(this.getCoordinates())
-	       		.setStyles({'position': 'absolute'})	
-			.inject(document.body);
- 		clone.getFirst().id = this.getFirst().id;
- 
-		var drag = clone.makeDraggable(draggableOptions); 
- 
-		drag.start(event); // start the event manual
-	});
-     });
+    pageCounter.staticCounter = page;	
+    $("page").value=page; 
+
+    $$('div.draggable').each(function(image)
+	{
+	   image.dispose();
+        });
+
+    var start = (page-1) * numImgShown;
+    var end = start + numImgShown;
+    var imageArray = [];
+
+    for(var i=start; i<array.length && i<end; i++)
+    {
+        imageArray[i-start] = new ImageObject(array[i], urlString);        
+    } 
+
+    createImageList(imageArray, "imageDiv");
+    makeListDraggable();
 }
 
 
@@ -79,28 +58,6 @@ function prevPage()
 }
 
 
-function loadPage(page)
-{
-    pageCounter.staticCounter = page;	
-    $("page").value=page;
-    
-
-    $$('div.draggable').each(function(image)
-	{
-	   image.dispose();
-        });
-
-    var start = (page-1) * numImgShown;
-    var end = start + numImgShown;
-
-    for(var i=start; i<array.length && i<end; i++)
-    {
-        imageArray[i-start] = new ImageObject(array[i], urlString);        
-    } 
-
-    createImageList(imageArray, "imageDiv");
-    makeListDraggable();
-}
 
 ////////////////////////////////////
 ////////Objects/"Classes"///////////
@@ -144,15 +101,13 @@ function createImageList(array, divId)
        var des =  document.createTextNode(array[i].catName);		    
        var img = document.createElement("img");
        img.src = array[i].imageUrl;
-       img.id = array[i].catName;
-
        
        var div = document.createElement("div");
        div.addClass("draggable");
 
        div.appendChild(des);
        div.appendChild(img);
-
+       div.id = array[i].catName;
        listDiv.appendChild(div);
     }
 }
