@@ -12,6 +12,8 @@ div.draggable{
 	height: 130px;
 	font-size: 14px;
 	padding-top: 10px;
+        text-align:center;
+	
 }
 #gearbag.blue{
 	border: 2px solid #1b609a;
@@ -35,14 +37,15 @@ input{
 	height:40px;
 	margin-left:auto;
 	margin-right:auto;
-	vertical-align:top;
 }
 #gearbag
 {
 	border: 2px solid #a1a1a1;
 	float: right;
 	max-height: 500px;
-	width: 100px;
+	width: 130px;
+	font-size: 14px;
+	text-align: center;
 }
 #gearBagImage
 {

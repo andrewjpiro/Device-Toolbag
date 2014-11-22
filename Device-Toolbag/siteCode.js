@@ -1,22 +1,33 @@
-pageCounter.staticCounter = 1;
+//////////////////////////////////////
+///////Main Site Code/////////////////
+//////////////////////////////////////
 
 var urlString = "https://www.ifixit.com/api/2.0/categories";
 var numImgShown = 28;
 
-var obj = JSON.parse(httpGet(urlString));
-var array = (getLastKeys(obj)).split(",");
+var obj = JSON.parse(httpGet(urlString)); //Get categories JSON
+var array = (getLastKeys(obj)).split(","); //Make array of category names
 
-var totalPages = (array.length/numImgShown); //possibly +1 if remainder...
-var total = document.createTextNode(totalPages);
-$("total").appendChild(total);
+var totalPages = (array.length/numImgShown);
+$("total").appendChild(document.createTextNode(totalPages));
 
 sqlDB.exec("CREATE TABLE IF NOT EXISTS deviceLog(deviceName TEXT, deviceURL, TEXT)", callback);
 
 sqlDB.findA('deviceLog', populateGearbag);
+
+pageCounter.staticCounter = 1;
 loadPage(1);
+
+
+////////////////////////////////////////
+//////////Paginating Functions//////////
+////////////////////////////////////////
 
 function loadPage(page)
 {
+    if(page < 1 || page > totalPages)
+	    return;
+
     pageCounter.staticCounter = page;	
     $("page").value=page; 
 
@@ -48,6 +59,7 @@ function goToPage()
 function nextPage()
 {
    
+   if(page.staticCounter < totalPages)
     loadPage(pageCounter.staticCounter+1);
 }
 
@@ -81,7 +93,7 @@ function pageCounter()
 
 
 /////////////////////////////////////
-//////Stand alone funtions///////////
+//////API Functions//////////////////
 /////////////////////////////////////
 
 /* createImageList
@@ -179,4 +191,49 @@ function httpGet(theUrl)
 	return xmlHttp.responseText;
 }
 
+//////////////////////////////////////////
+///////Fullscreen functions///////////////
+//////////////////////////////////////////
+var fullscreen = false;
 
+document.addEventListener("keydown", function(e) {
+  if (e.keyCode == 13) {
+    toggleFullscreen();
+  }
+}, false);
+
+function toggleFullscreen()
+{
+     if(fullscreen)
+     {
+	exitFullscreen();
+	fullscreen = false;
+     }
+     else
+     {
+	launchIntoFullscreen(document.documentElement);
+	fullscreen = true;
+     }	
+}
+
+function launchIntoFullscreen(element) {
+  if(element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if(element.mozRequestFullScreen) {
+    element.mozRequestFullScreen();
+  } else if(element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen();
+  } else if(element.msRequestFullscreen) {
+    element.msRequestFullscreen();
+  }
+}
+
+function exitFullscreen() {
+  if(document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if(document.mozCancelFullScreen) {
+    document.mozCancelFullScreen();
+  } else if(document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  }
+}
