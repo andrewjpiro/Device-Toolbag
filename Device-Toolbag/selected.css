@@ -45,10 +45,12 @@ input{
 {
 	border: 2px solid #a1a1a1;
 	float: right;
-	max-height: 500px;
+	max-height: 600px;
 	width: 130px;
 	font-size: 12px;
 	text-align: center;
+	overflow-y: scroll;
+	overflow-x: hidden;
 }
 #gearBagImage
 {
