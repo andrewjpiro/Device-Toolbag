@@ -1,3 +1,14 @@
+/* SQLCode.js
+ *
+ * This file contains all the functions and creates any objects
+ * needed to run the sqlDatabase. This includes functions that
+ * load or empty the gearbag.
+ */
+
+/////////////////////////////////
+////Database Setup Functions/////
+/////////////////////////////////
+
 var sqlDB = new MooSQL({
 	dbName: 'deviceLog',
 
@@ -10,6 +21,16 @@ var sqlDB = new MooSQL({
 function callback(t, r)
 {
 }
+
+function startUpDB(){
+	sqlDB.exec("CREATE TABLE IF NOT EXISTS deviceLog(deviceName TEXT, deviceURL, TEXT)", callback);
+
+	sqlDB.findA('deviceLog', populateGearbag);
+}
+
+//////////////////////////////////
+////Database 'Work' Functions/////
+//////////////////////////////////
 
 function addToDatabase(deviceName, deviceURL)
 {
@@ -28,14 +49,9 @@ function clearDatabase()
 	emptyGearbag();	
 }
 
-function emptyGearbag()
-{
-     $('gearbag').getChildren().each(function(dev)
-      {
-	      if(dev.getFirst())
-	      	dev.dispose();
-      });
-}
+//////////////////////////////////
+//////Gearbag functions///////////
+//////////////////////////////////
 
 function populateGearbag(transaction, result)
 {
@@ -48,12 +64,23 @@ function populateGearbag(transaction, result)
 	   var des = document.createTextNode(result.rows.item(i).deviceName); 
     	   var image = document.createElement('img');
 	       image.src = result.rows.item(i).deviceURL;
-		
+	       image.addClass("deviceImage");
+	       
+	       storedDev.appendChild(image);	
 	       storedDev.appendChild(des);
-	       storedDev.appendChild(image);
 	       storedDev.inject($('gearbag'), 'bottom');
            
 	}
     }	    
 
 }
+
+function emptyGearbag()
+{
+     $('gearbag').getChildren().each(function(dev)
+      {
+	      if(dev.getFirst())
+	      	dev.dispose();
+      });
+}
+

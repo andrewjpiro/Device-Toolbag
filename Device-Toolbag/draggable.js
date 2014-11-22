@@ -1,32 +1,8 @@
-var draggableOptions={
-	droppables: $('gearbag'),
-	
-        onDrop:function(elem, droppable, event)
-	{
-		if(droppable)
-		{
-		     droppable.addClass('dropped');
-	             var deviceName = elem.getFirst().id;
-		     elem.clone().inject(droppable, 'top');
-		}
-	},
-
-	onEnter: function(elem, droppable)
-	{
-		droppable.addClass('blue');
-	},
-
-	onLeave: function(elem, droppable)
-	{
-		droppable.removeClass('blue');
-	},
-	onComplete: function(elem)
-	{
-		elem.dispose();
-		$('gearbag').removeClass('blue');
-	}
-};
-
+/* draggable.js
+ *
+ * This file contains all the code needed for the drag and
+ * drop funcitonality of the device list.
+ */
 
 function makeListDraggable()
 {
@@ -37,7 +13,7 @@ function makeListDraggable()
  		var item = this;
 		var clone = this.clone()
 			.setStyles(this.getCoordinates())
-	       		.setStyles({'position': 'absolute'})	
+	       		.setStyles({'position': 'absolute', 'opacity': 0.7})	
 			.inject(document.body);
  
 		var drag = clone.makeDraggable({
@@ -82,10 +58,14 @@ function makeListDraggable()
 			{
 			   elem.dispose();
 			   $('gearbag').removeClass('blue');
+			},
+			onCancel: function(elem)
+			{
+			   elem.dispose();
 			}
 		}); 
  
-		drag.start(event); // start the event manual
+		drag.start(event);
 	});
      });
 }

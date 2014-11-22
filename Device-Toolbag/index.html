@@ -2,19 +2,23 @@
 <html>
 
   <head>
-     <title>Device List</title>   
-     <script type = "text/javascript" src="MooTools-Core-1.5.1.js"></script>
-     <script src = "moosql.js"></script>
-     <link rel="stylesheet" href="selected.css">
+
+      <title>Device Toolbag</title>   
+      <script type = "text/javascript" src="MooTools-Core-1.5.1.js"></script>
+      <script src = "moosql.js"></script>
+      <link rel="stylesheet" href="selected.css">
+
   </head>
 
   <body>
+
 	<div id = "DisplayMessage">
 		<h4>Drag items into the gearbag. 
-			Hit enter to toggle fullscreen</h4>	
+		    Hit enter to toggle fullscreen</h4>
+    	</div>
+
 	<div id = "gearbag">
-	    <button onclick="clearDatabase()">Clear</button>
-		
+	        <button onclick="clearDatabase()">Clear</button>
 		<img src = "https://cdn4.iconfinder.com/data/icons/whsr-january-flaticon-set/512/toolbox.png" id="gearBagImage">
 	</div>
 
@@ -24,17 +28,19 @@
 	  <button style="float:right" onclick="nextPage()">Next page</button>
 	  
 	  <div id="paginator">
-	    <p id="total"> Page 	
-	     <input type="text" id="page" value=1></input>
-	     <input type = "button" value="Go" onclick="goToPage()"></input>
-	     of </p>
+
+	        <p id="total"> Page 	
+	        <input type="text" id="page" value=1></input>
+	        <input type = "button" value="Go" onclick="goToPage()"></input>
+	         of </p>
           </div>
 
 	</div>
 	
         <script src = "draggable.js"></script>	
 	<script src = "sqlCode.js"></script>        
-	<script type = "text/javascript" src="siteCode.js"></script>
+	<script src="siteCode.js"></script>
+
   </body>
 
 </html>

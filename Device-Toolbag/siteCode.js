@@ -8,16 +8,14 @@ var numImgShown = 28;
 var obj = JSON.parse(httpGet(urlString)); //Get categories JSON
 var array = (getLastKeys(obj)).split(","); //Make array of category names
 
-var totalPages = (array.length/numImgShown);
-$("total").appendChild(document.createTextNode(totalPages));
+var totalPages = Math.ceil((array.length/numImgShown));
+var currentPage = 1;
 
-sqlDB.exec("CREATE TABLE IF NOT EXISTS deviceLog(deviceName TEXT, deviceURL, TEXT)", callback);
-
-sqlDB.findA('deviceLog', populateGearbag);
-
-pageCounter.staticCounter = 1;
-loadPage(1);
-
+window.addEvent('domready', function() 
+{
+    startUpDB();
+    loadPage(currentPage);
+});
 
 ////////////////////////////////////////
 //////////Paginating Functions//////////
@@ -28,7 +26,7 @@ function loadPage(page)
     if(page < 1 || page > totalPages)
 	    return;
 
-    pageCounter.staticCounter = page;	
+    currentPage = page;    
     $("page").value=page; 
 
     $$('div.draggable').each(function(image)
@@ -40,10 +38,12 @@ function loadPage(page)
     var end = start + numImgShown;
     var imageArray = [];
 
-    for(var i=start; i<array.length && i<end; i++)
+    for(var i=start; i<(array.length-1) && i<end; i++)
     {
         imageArray[i-start] = new ImageObject(array[i], urlString);        
     } 
+
+    $("total").appendChild(document.createTextNode(totalPages));
 
     createImageList(imageArray, "imageDiv");
     makeListDraggable();
@@ -59,21 +59,18 @@ function goToPage()
 function nextPage()
 {
    
-   if(page.staticCounter < totalPages)
-    loadPage(pageCounter.staticCounter+1);
+   if(currentPage < totalPages)
+    loadPage(currentPage+1);
 }
 
 function prevPage()
 {
-    if(pageCounter.staticCounter > 1)
-    	loadPage(pageCounter.staticCounter-1);
+    if(currentPage > 1)
+    	loadPage(currentPage-1);
 }
-
-
-
-////////////////////////////////////
-////////Objects/"Classes"///////////
-////////////////////////////////////
+///////////////////////////////////////
+///////////Objects/////////////////////
+///////////////////////////////////////
 
 /* ImageObject
  * - Takes a category name and base url as args.
@@ -87,10 +84,6 @@ function ImageObject(catName, url)
       this.catName = catName;
       this.imageUrl = obj.image.thumbnail;     
 }
-function pageCounter()
-{
-}
-
 
 /////////////////////////////////////
 //////API Functions//////////////////
@@ -113,12 +106,13 @@ function createImageList(array, divId)
        var des =  document.createTextNode(array[i].catName);		    
        var img = document.createElement("img");
        img.src = array[i].imageUrl;
-       
+       img.addClass("deviceImage");
+
        var div = document.createElement("div");
        div.addClass("draggable");
 
+       div.appendChild(img);       
        div.appendChild(des);
-       div.appendChild(img);
        div.id = array[i].catName;
        listDiv.appendChild(div);
     }
@@ -194,9 +188,10 @@ function httpGet(theUrl)
 //////////////////////////////////////////
 ///////Fullscreen functions///////////////
 //////////////////////////////////////////
+
 var fullscreen = false;
 
-document.addEventListener("keydown", function(e) {
+document.addEventListener("keyup", function(e) {
   if (e.keyCode == 13) {
     toggleFullscreen();
   }

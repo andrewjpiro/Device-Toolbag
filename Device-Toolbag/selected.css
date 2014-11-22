@@ -10,11 +10,14 @@ div.draggable{
 	float: left;
 	position: relative;
 	height: 130px;
-	font-size: 14px;
+	font-size: 12px;
 	padding-top: 10px;
-        text-align:center;
-	
+        text-align:center;	
 }
+img.deviceImage{
+	width:120px;
+}
+
 #gearbag.blue{
 	border: 2px solid #1b609a;
 }
@@ -44,7 +47,7 @@ input{
 	float: right;
 	max-height: 500px;
 	width: 130px;
-	font-size: 14px;
+	font-size: 12px;
 	text-align: center;
 }
 #gearBagImage
