@@ -40,7 +40,9 @@ function makeListDraggable()
 			        var deviceName = item.id;
 				var deviceUrl = item.getFirst().src;
 				addToDatabase(deviceName, deviceUrl);
-		     	        item.clone().inject(droppable, 'bottom');
+				var  itemClone = item.clone();
+				itemClone.removeClass('draggable');
+		     	        itemClone.inject(droppable, 'bottom');
 			      }
 			  } 
 			},
