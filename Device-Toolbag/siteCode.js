@@ -9,6 +9,8 @@ var obj = JSON.parse(httpGet(urlString)); //Get categories JSON
 var array = (getLastKeys(obj)).split(","); //Make array of category names
 
 var totalPages = Math.ceil((array.length/numImgShown));
+$("total").appendChild(document.createTextNode(totalPages));
+
 var currentPage = 1;
 
 window.addEvent('domready', function() 
@@ -42,9 +44,7 @@ function loadPage(page)
     {
         imageArray[i-start] = new ImageObject(array[i], urlString);        
     } 
-
-    $("total").appendChild(document.createTextNode(totalPages));
-
+    
     createImageList(imageArray, "imageDiv");
     makeListDraggable();
 }
